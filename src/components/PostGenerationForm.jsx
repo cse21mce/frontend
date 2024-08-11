@@ -73,7 +73,18 @@ export function PostGenerationForm() {
                             </FormItem>
                         )}
                     />
-                    <Button disabled={loading} type="submit" className="ml-auto">Generate Translation</Button>
+                    <div className="flex justify-between items-center">
+                        {
+                            loading ?
+                                <div className="flex mx-auto">
+                                    <div className="w-4 h-4 animate-ping bg-primary rounded-full"></div>
+                                    <div className="w-4 h-4 animate-ping bg-primary rounded-full delay-75"></div>
+                                    <div className="w-4 h-4 animate-ping bg-primary rounded-full delay-150"></div>
+                                </div>
+                                : null
+                        }
+                        <Button disabled={loading} type="submit" className="ml-auto">Generate Translation</Button>
+                    </div>
                 </form>
             </Form>
         </>
