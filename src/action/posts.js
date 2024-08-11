@@ -3,9 +3,10 @@
 import dbConnect from "@/lib/db";
 import PressRelease from "@/models/PressRelease";
 import { revalidatePath } from "next/cache";
-dbConnect();
+
 
 export const getPosts = async () => {
+    await dbConnect();
     try {
         const pressReleases = await PressRelease.find({}).sort({ date_posted: -1 });
 
@@ -16,6 +17,8 @@ export const getPosts = async () => {
 }
 
 export const getPost = async (title) => {
+    await dbConnect();
+
     try {
 
         const pressRelease = await PressRelease.findOne({ title });
@@ -27,6 +30,8 @@ export const getPost = async (title) => {
 }
 
 export const getRecentPosts = async (title) => {
+    await dbConnect();
+
     try {
         const recentReleases = await PressRelease.find()
             .sort({ date_posted: -1 })  // Sort by date_posted in descending order
@@ -39,6 +44,7 @@ export const getRecentPosts = async (title) => {
 }
 
 export const scrapPost = async (url) => {
+    await dbConnect();
     try {
         const res = await fetch(`${process.env.BACKEND_URL}/scrap?url=${url}`);
         const data = await res.json();
