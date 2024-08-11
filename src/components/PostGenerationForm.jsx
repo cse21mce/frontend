@@ -14,6 +14,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { useState } from "react"
+import { scrapPost } from "@/action/posts"
+import PostCard from "./PostCard"
+import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
@@ -23,6 +27,10 @@ const formSchema = z.object({
 });
 
 export function PostGenerationForm() {
+
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -30,28 +38,44 @@ export function PostGenerationForm() {
         },
     })
 
-    function onSubmit(values) {
-        toast.error(values.url)
+    async function onSubmit(values) {
+        try {
+            setLoading(true);
+            const res = await scrapPost(values.url);
+            if (res.error) {
+                return toast.error(res.error);
+            }
+            const title = encodeURIComponent(res?.title).replace(/%20/g, '+');
+            router.push(`/post/${title}`);
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+        finally {
+            setLoading(false);
+        }
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 rounded-md border border-input bg-secondary space-y-8 w-full flex flex-col relative">
-                <FormField
-                    control={form.control}
-                    name="url"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Post URL</FormLabel>
-                            <FormControl>
-                                <Input placeholder="https://pib.gov.in/PressReleseDetail.aspx?PRID=2044264" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit" className="ml-auto">Generate Translation</Button>
-            </form>
-        </Form>
+        <>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 rounded-md border border-input bg-secondary space-y-8 w-full flex flex-col relative">
+                    <FormField
+                        control={form.control}
+                        name="url"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Post URL</FormLabel>
+                                <FormControl>
+                                    <Input disabled={loading} placeholder="https://pib.gov.in/PressReleseDetail.aspx?PRID=2044264" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button disabled={loading} type="submit" className="ml-auto">Generate Translation</Button>
+                </form>
+            </Form>
+        </>
     )
 }

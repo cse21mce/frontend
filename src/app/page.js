@@ -1,7 +1,12 @@
+import { getRecentPosts } from "@/action/posts";
+import PostCard from "@/components/PostCard";
 import { PostGenerationForm } from "@/components/PostGenerationForm";
 import { H1 } from "@/components/ui/typography";
 
-const HomePage = () => {
+const HomePage = async () => {
+
+  const recentPosts = await getRecentPosts();
+
   return (
     <>
       {/* Form Section */}
@@ -9,9 +14,20 @@ const HomePage = () => {
         <H1>Generate Translation</H1>
         <PostGenerationForm />
       </section>
-      {/* Recent Post Section */}
-      <section>
 
+
+      {/* Recent Post Section */}
+      <section className="mt-20 flex-col flex gap-6">
+        <H1>Recent Releases</H1>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {
+            recentPosts.map(post => {
+              return (
+                <PostCard post={post} key={post._id} />
+              )
+            })
+          }
+        </div>
       </section>
     </>
   );
