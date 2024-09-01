@@ -42,7 +42,7 @@ export function PostGenerationForm() {
         try {
             setLoading(true);
             const res = await scrapPost(values.url);
-            if (res.suceess) {
+            if (res.success) {
                 const title = encodeURIComponent(res?.title).replace(/%20/g, '+');
                 router.push(`/post/${title}?lang=english`);
             }

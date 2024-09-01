@@ -70,7 +70,7 @@ export const scrapPost = async (url) => {
 
         return {
             message: data.message,
-            suceess: data.success || false,
+            success: data.success || false,
             type: data.type || 'error',
             title: data.data.title,
         };
@@ -78,7 +78,7 @@ export const scrapPost = async (url) => {
     } catch (error) {
         return {
             message: error.message,
-            suceess: false,
+            success: false,
             type: 'error',
         }
     }
