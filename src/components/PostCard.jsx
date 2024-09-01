@@ -7,7 +7,7 @@ const PostCard = ({ post }) => {
     const href = encodeURIComponent(post?.title).replace(/%20/g, '+')
     return (
         <Link href={`/post/${href}`}>
-            <Card >
+            <Card className="shadow-md">
                 <CardContent className="pt-6">
                     <div className={`bg-secondary rounded-md flex items-center justify-center h-[250px] overflow-hidden ${post.images ? 'p-0' : 'p-6'}`}>
                         {
@@ -21,7 +21,7 @@ const PostCard = ({ post }) => {
                 </CardContent>
 
                 <CardHeader className="pt-0">
-                    <CardTitle className="text-ellipsis overflow-hidden text-nowrap" title={post.title}>{post.title}</CardTitle>
+                    <CardTitle className="text-ellipsis overflow-hidden text-nowrap text-accent" title={post.title}>{post.title}</CardTitle>
                     <CardDescription className="overflow-hidden text-ellipsis line-clamp-5">{post.content}</CardDescription>
                 </CardHeader>
             </Card>

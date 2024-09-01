@@ -52,7 +52,7 @@ export const getRecentPosts = async (title) => {
         // Sort the array by timestamp in descending order (latest first)
         const sortedReleases = updatedReleases.sort((a, b) => b.timestamp - a.timestamp);
 
-        return sortedReleases.slice(0, 5); // Return the first 5 elements
+        return sortedReleases.slice(0, 6); // Return the first 5 elements
 
     } catch (error) {
         return []
@@ -68,11 +68,9 @@ export const scrapPost = async (url) => {
         revalidatePath('/all');
         revalidatePath('/');
 
-        console.log(data)
-
         return {
             message: data.message,
-            suceess: data.suceess || false,
+            suceess: data.success || false,
             type: data.type || 'error',
             title: data.data.title,
         };

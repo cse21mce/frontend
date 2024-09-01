@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const Header = () => {
     return (
-        <Navbar className={'border top-2 rounded-full backdrop-blur-3xl'} />
+        <Navbar className={'top-0 backdrop-blur-3xl shadow-xl'} />
     )
 }
 

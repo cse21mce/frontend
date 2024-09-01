@@ -32,9 +32,9 @@ const PostPage = async ({ searchParams, params }) => {
             {
                 lang === 'english' ? <>
                     <div className="">
-                        <H1>{post?.title}</H1>
+                        <H1 className={'text-accent'}>{post?.title}</H1>
                         <div className="mt-2">
-                            <H3>{post?.ministry}</H3>
+                            <H3 className={'text-border'}>{post?.ministry}</H3>
                             <Muted className={''}>{post?.date_posted}</Muted>
                         </div>
                     </div>
@@ -50,14 +50,14 @@ const PostPage = async ({ searchParams, params }) => {
                                 : null
                         }
                     </div>
-                    <article>{post?.content}</article>
+                    <article className='text-lg'>{post?.content}</article>
                 </>
                     : post?.translations[lang]?.title ?
                         <>
                             <div className="">
-                                <H1>{post?.translations[lang]?.title}</H1>
+                                <H1 className={'text-accent'}>{post?.translations[lang]?.title}</H1>
                                 <div className="mt-2">
-                                    <H3>{post?.translations[lang]?.ministry}</H3>
+                                    <H3 className={'text-border'}>{post?.translations[lang]?.ministry}</H3>
                                     <Muted className={''}>{post?.date_posted}</Muted>
                                 </div>
                             </div>
@@ -73,14 +73,14 @@ const PostPage = async ({ searchParams, params }) => {
                                         : null
                                 }
                             </div>
-                            <article>{post?.translations[lang]?.content}</article>
+                            <article className='text-lg'>{post?.translations[lang]?.content}</article>
                         </>
                         :
                         <>
 
-                            <H1>Please wait...</H1>
+                            <H1 className={'text-accent'}>Please wait...</H1>
                             <Skeleton className={'w-full h-[450px]'} />
-                            <H3>Press Relese is being translated.</H3>
+                            <H3 className={'text-border'}>Press Relese is being translated.</H3>
                         </>
             }
 

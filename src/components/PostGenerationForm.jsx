@@ -59,7 +59,7 @@ export function PostGenerationForm() {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 rounded-md border border-input bg-secondary space-y-8 w-full flex flex-col relative">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 rounded-md border bg-[#e5e1e0] space-y-8 w-full flex flex-col relative">
                     <FormField
                         control={form.control}
                         name="url"
