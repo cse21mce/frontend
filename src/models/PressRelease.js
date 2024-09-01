@@ -1,5 +1,25 @@
 const mongoose = require('mongoose');
 
+const translationsSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, 'Translation Title is Required'],
+    },
+    content: {
+        type: String,
+        required: [true, 'Translation Content is Required'],
+    },
+    ministry: {
+        type: String,
+        required: [true, 'Translation Ministry is Required'],
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'completed', 'in_progress'],
+        default: 'pending',
+    }
+});
+
 const pressReleaseSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -20,6 +40,25 @@ const pressReleaseSchema = new mongoose.Schema({
     ministry: {
         type: String,
         required: [true, 'Ministry is Required'],
+    },
+    translations: {
+        type: Object, // Using Map allows for flexible keys (e.g., language codes)
+        default: {
+            english: translationsSchema,
+            hindi: translationsSchema,
+            urdu: translationsSchema,
+            punjabi: translationsSchema,
+            gujarati: translationsSchema,
+            marathi: translationsSchema,
+            telugu: translationsSchema,
+            kannada: translationsSchema,
+            malayalam: translationsSchema,
+            tamil: translationsSchema,
+            odia: translationsSchema,
+            bengali: translationsSchema,
+            assamese: translationsSchema,
+            manipuri_meitei: translationsSchema,
+        }
     }
 }, {
     timestamps: true, // Adds createdAt and updatedAt fields automatically

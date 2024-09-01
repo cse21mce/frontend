@@ -46,7 +46,7 @@ export function PostGenerationForm() {
                 return toast.error(res.error);
             }
             const title = encodeURIComponent(res?.title).replace(/%20/g, '+');
-            router.push(`/post/${title}`);
+            router.push(`/post/${title}?lang=english`);
 
         } catch (error) {
             toast.error(error.message)

@@ -1,13 +1,12 @@
 import mongoose from 'mongoose'
 
-const MONGODB_URI = process.env.MONGO_URI
+const MONGODB_URI = "mongodb+srv://cse21mce:k2oatQUk2OjkW8dH@cluster0.el4l0.mongodb.net/pib" || process.env.MONGO_URI
 
 if (!MONGODB_URI) {
     throw new Error(
         'Please define the MONGODB_URI environment variable inside .env',
     )
 }
-
 let cached = global.mongoose
 
 if (!cached) {
