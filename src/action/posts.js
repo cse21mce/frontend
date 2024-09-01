@@ -1,6 +1,7 @@
 'use server';
 
 import dbConnect from "@/lib/db";
+import { parseDatePosted } from "@/lib/utils";
 import PressRelease from "@/models/PressRelease";
 import { revalidatePath } from "next/cache";
 
@@ -34,12 +35,24 @@ export const getRecentPosts = async (title) => {
     await dbConnect();
 
     try {
-        const recentReleases = await PressRelease.find()
-            .sort({ date_posted: -1 })  // Sort by date_posted in descending order
-            .limit(5);                   // Limit the result to 5 documents
+        const recentReleases = await PressRelease.find();
 
-        console.log(recentReleases)
-        return recentReleases.map(p => ({ ...p._doc, _id: p._doc._id.toString() }));
+        const updatedReleases = recentReleases.map(p => {
+            // Extract and parse the date
+            const datePosted = parseDatePosted(p._doc.date_posted);
+
+            // Add the timestamp field to the document
+            return {
+                ...p._doc,
+                _id: p._doc._id.toString(),
+                timestamp: datePosted.getTime() // Add timestamp in milliseconds
+            };
+        });
+
+        // Sort the array by timestamp in descending order (latest first)
+        const sortedReleases = updatedReleases.sort((a, b) => b.timestamp - a.timestamp);
+
+        return sortedReleases.slice(0, 5); // Return the first 5 elements
 
     } catch (error) {
         return []

@@ -27,6 +27,23 @@ export const inProgressTranslation = async (title, lang) => {
     }
 }
 
+export const isTranslating = async (title) => {
+    await dbConnect();
+    console.log(title)
+    try {
+        const pressRelease = await PressRelease.findOne({ title: title.trim() });
+        // Check if any translation has the status 'in_progress'
+        const isAnyInProgress = Object.values(pressRelease.translations).some(translation => translation.status === 'in_progress');
+        return isAnyInProgress;
+    } catch (error) {
+        return false;
+    }
+}
+
+
+
+
+
 export const getTranslation = async (title, content, ministry, lang) => {
     try {
         // Check if all fields are present
@@ -71,6 +88,38 @@ export const getTranslation = async (title, content, ministry, lang) => {
         revalidatePath(`/all`);
 
         return data;
+
+    } catch (error) {
+        return {
+            type: 'error',
+            message: error.message,
+            success: false
+        };
+    }
+}
+
+
+export const getAllTranslations = async (title, content, ministry) => {
+    try {
+
+
+        if (await isTranslating(title)) {
+            return {
+                type: 'error',
+                message: 'Translation is in progress. Please wait...',
+                success: false
+            };
+        }
+        // const res = await fetch(`${process.env.TRANSLATION_URL}/translate`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ title, content, ministry })
+        // });
+
+        // console.log(res)
+        // return res;
 
     } catch (error) {
         return {

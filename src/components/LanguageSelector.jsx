@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { toast } from "sonner";
 
 
@@ -20,12 +20,13 @@ export default function LanguageSelector({ title, content, ministry }) {
     useEffect(() => {
 
         const fetchTranslation = async () => {
+            let intervalId;
             const lang = searchParams.get('lang') || 'english';
             let res = await getTranslation(title, content, ministry, lang);
-            console.log(res)
+
 
             if (res.type === 'in_progress') {
-                const intervalId = setInterval(async () => {
+                intervalId = setInterval(async () => {
                     res = await getTranslation(title, content, ministry, lang);
                     if (res.success && res.type === 'success') {
                         clearInterval(intervalId);
@@ -34,12 +35,14 @@ export default function LanguageSelector({ title, content, ministry }) {
                         clearInterval(intervalId);
                         toast[res.type](res.message);
                     }
-                }, 1000); // Poll every second
+                }, 2000); // Poll every 2 second
 
                 return () => clearInterval(intervalId); // Clear interval on unmount
             } else if (res.success && lang !== 'english') {
                 toast[res.type](res.message);
             }
+
+            return () => clearInterval(intervalId); // Clear interval on unmount
         };
 
         fetchTranslation(); // Initial call to fetch translation

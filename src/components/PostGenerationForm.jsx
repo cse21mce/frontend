@@ -65,7 +65,7 @@ export function PostGenerationForm() {
                         name="url"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Post URL</FormLabel>
+                                <FormLabel>Press Relese URL</FormLabel>
                                 <FormControl>
                                     <Input disabled={loading} placeholder="https://pib.gov.in/PressReleseDetail.aspx?PRID=2044264" {...field} />
                                 </FormControl>
@@ -83,7 +83,7 @@ export function PostGenerationForm() {
                                 </div>
                                 : null
                         }
-                        <Button disabled={loading} type="submit" className="ml-auto">Generate Translation</Button>
+                        <Button disabled={loading} type="submit" className="ml-auto">Get Press Relese</Button>
                     </div>
                 </form>
             </Form>

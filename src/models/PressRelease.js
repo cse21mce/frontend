@@ -4,6 +4,7 @@ const translationsSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'Translation Title is Required'],
+        unique: true,
     },
     content: {
         type: String,

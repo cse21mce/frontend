@@ -1,5 +1,6 @@
 import { getPost } from '@/action/posts'
 import LanguageSelector from '@/components/LanguageSelector'
+import TranslarteAllBtn from '@/components/TranslarteAllBtn'
 import { Skeleton } from '@/components/ui/skeleton'
 import { H1, H3, Muted, P } from '@/components/ui/typography'
 import Image from 'next/image'
@@ -21,7 +22,8 @@ const PostPage = async ({ searchParams, params }) => {
 
     return (
         <section className='flex flex-col gap-6'>
-            <div className="ml-auto">
+            <div className="ml-auto flex gap-2 flex-wrap">
+                {/* <TranslarteAllBtn title={post?.title} content={post?.content} ministry={post?.ministry} /> */}
                 <LanguageSelector title={post?.title} content={post?.content} ministry={post?.ministry} />
             </div>
             {
@@ -72,7 +74,10 @@ const PostPage = async ({ searchParams, params }) => {
                         </>
                         :
                         <>
-                            <Skeleton className={'w-full h-96'} />
+
+                            <H1>Please wait...</H1>
+                            <Skeleton className={'w-full h-[450px]'} />
+                            <H3>Press Relese is being translated.</H3>
                         </>
             }
 
