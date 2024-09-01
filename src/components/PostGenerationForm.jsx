@@ -42,11 +42,11 @@ export function PostGenerationForm() {
         try {
             setLoading(true);
             const res = await scrapPost(values.url);
-            if (res.error) {
-                return toast.error(res.error);
+            if (res.suceess) {
+                const title = encodeURIComponent(res?.title).replace(/%20/g, '+');
+                router.push(`/post/${title}?lang=english`);
             }
-            const title = encodeURIComponent(res?.title).replace(/%20/g, '+');
-            router.push(`/post/${title}?lang=english`);
+            toast[res.type](res.message);
 
         } catch (error) {
             toast.error(error.message)

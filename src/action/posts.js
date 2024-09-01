@@ -68,14 +68,20 @@ export const scrapPost = async (url) => {
         revalidatePath('/all');
         revalidatePath('/');
 
+        console.log(data)
+
         return {
             message: data.message,
+            suceess: data.suceess || false,
+            type: data.type || 'error',
             title: data.data.title,
         };
 
     } catch (error) {
         return {
-            error: error.message
+            message: error.message,
+            suceess: false,
+            type: 'error',
         }
     }
 }

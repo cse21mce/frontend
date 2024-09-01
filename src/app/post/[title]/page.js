@@ -1,6 +1,7 @@
 import { getPost } from '@/action/posts'
 import LanguageSelector from '@/components/LanguageSelector'
 import TranslarteAllBtn from '@/components/TranslarteAllBtn'
+import { Baloo_2 } from 'next/font/google'
 import { Skeleton } from '@/components/ui/skeleton'
 import { H1, H3, Muted, P } from '@/components/ui/typography'
 import Image from 'next/image'
@@ -16,12 +17,14 @@ export const generateMetadata = async ({ params }) => {
 
 }
 
+const hindiFont = Baloo_2({ subsets: ['latin'] })
+
 const PostPage = async ({ searchParams, params }) => {
     const post = await getPost(params.title);
     const lang = searchParams?.lang || 'english';
 
     return (
-        <section className='flex flex-col gap-6'>
+        <section className={`${hindiFont.className} flex flex-col gap-6`}>
             <div className="ml-auto flex gap-2 flex-wrap">
                 {/* <TranslarteAllBtn title={post?.title} content={post?.content} ministry={post?.ministry} /> */}
                 <LanguageSelector title={post?.title} content={post?.content} ministry={post?.ministry} />
