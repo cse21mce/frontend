@@ -110,16 +110,15 @@ export const getAllTranslations = async (title, content, ministry) => {
                 success: false
             };
         }
-        // const res = await fetch(`${process.env.TRANSLATION_URL}/translate`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ title, content, ministry })
-        // });
+        const res = await fetch(`${process.env.TRANSLATION_URL}/translate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, content, ministry })
+        });
 
-        // console.log(res)
-        // return res;
+        return res;
 
     } catch (error) {
         return {

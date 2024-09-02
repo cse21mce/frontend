@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useState } from "react"
 import { scrapPost } from "@/action/posts"
-import PostCard from "./PostCard"
 import { useRouter } from "next/navigation"
 
 

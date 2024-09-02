@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const PostCard = ({ post }) => {
+
     const href = encodeURIComponent(post?.title).replace(/%20/g, '+')
     return (
         <Link href={`/post/${href}`}>
@@ -22,7 +23,8 @@ const PostCard = ({ post }) => {
 
                 <CardHeader className="pt-0">
                     <CardTitle className="text-ellipsis overflow-hidden text-nowrap text-accent" title={post.title}>{post.title}</CardTitle>
-                    <CardDescription className="overflow-hidden text-ellipsis line-clamp-5">{post.content}</CardDescription>
+                    <p className="text-muted-foreground text-sm">{post.date_posted}</p>
+                    <CardDescription className="overflow-hidden text-ellipsis line-clamp-5 text-zinc-700 text-base">{post.content}</CardDescription>
                 </CardHeader>
             </Card>
         </Link>

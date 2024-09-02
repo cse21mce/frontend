@@ -29,6 +29,7 @@ export default function LanguageSelector({ title, content, ministry }) {
                 intervalId = setInterval(async () => {
                     res = await getTranslation(title, content, ministry, lang);
                     if (res.success && res.type === 'success') {
+                        router.refresh();
                         clearInterval(intervalId);
                         toast[res.type](res.message);
                     } else if (res.type === 'error') {
