@@ -3,21 +3,29 @@ const mongoose = require('mongoose');
 const translationsSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Translation Title is Required'],
+        required: [true, 'Translated Title is Required'],
         unique: true,
+    },
+    summary: {
+        type: String,
+        required: [true, 'Translated Summary is Required'],
     },
     content: {
         type: String,
-        required: [true, 'Translation Content is Required'],
+        required: [true, 'Translated Content is Required'],
     },
     ministry: {
         type: String,
-        required: [true, 'Translation Ministry is Required'],
+        required: [true, 'Translated Ministry is Required'],
     },
     status: {
         type: String,
         enum: ['pending', 'completed', 'in_progress'],
         default: 'pending',
+    },
+    video: {
+        type: String,
+        required: [true, 'Translated Video is Required'],
     }
 });
 

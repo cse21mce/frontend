@@ -7,6 +7,10 @@ const nextConfig = {
                 hostname: "**",
             },
             {
+                protocol: 'http',
+                hostname: "**",
+            },
+            {
                 protocol: 'https',
                 hostname: "static.pib.gov.in"
             }

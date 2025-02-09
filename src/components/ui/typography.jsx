@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export function H1({ className, children }) {
     return (
-        <h1 className={cn("scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl text-border", className)}>
+        <h1 className={cn("scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl text-primary", className)}>
             {children}
         </h1>
     );

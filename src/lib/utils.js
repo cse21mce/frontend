@@ -1,31 +1,38 @@
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { formatDistance } from 'date-fns'
+
+
+
+export const languages = [
+  { "value": "english", "label": "English" },
+  { "value": "hindi", "label": "हिन्दी" },
+  { "value": "urdu", "label": "اردو" },
+  // { "value": "punjabi", "label": "ਪੰਜਾਬੀ" },
+  { "value": "gujrati", "label": "ગુજરાતી" },
+  { "value": "marathi", "label": "मराठी" },
+  { "value": "telugu", "label": "తెలుగు" },
+  { "value": "kannada", "label": "ಕನ್ನಡ" },
+  { "value": "malayalam", "label": "മലയാളം" },
+  { "value": "tamil", "label": "தமிழ்" },
+  // { "value": "odia", "label": "ଓଡ଼ିଆ" },
+  { "value": "bengali", "label": "বাংলা" },
+  // { "value": "assamese", "label": "অসমীয়া" },
+  // { "value": "manipuri_meitei", "label": "মৈতৈ" }
+]
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
+// Encode a string for use in a URL
+export const encodeURL = (text) => encodeURIComponent(text).replace(/%20/g, '+');
 
+// Decode a URL-encoded string
+export const decodeURL = (url) => decodeURIComponent(url).replace(/\+/g, ' ');
 
 export const parseDatePosted = (datePostedStr) => {
-  // Example input: "Posted On: 24 AUG 2024 9:48AM by PIB Delhi"
-  const datePattern = /Posted On: (\d{2}) (\w{3}) (\d{4}) (\d{1,2}):(\d{2})(AM|PM)/;
-  const match = datePostedStr.match(datePattern);
 
-  // Extract components
-  const [, day, month, year, hour, minute, period] = match;
+  const datePosted = new Date(datePostedStr);
 
-  // Convert month abbreviation to number
-  const monthMap = {
-    JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
-    JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11
-  };
-  const monthNumber = monthMap[month];
-
-  // Convert 12-hour format to 24-hour format
-  let hour24 = parseInt(hour, 10);
-  if (period === 'PM' && hour24 < 12) hour24 += 12;
-  if (period === 'AM' && hour24 === 12) hour24 = 0;
-
-  // Create Date object
-  return new Date(year, monthNumber, day, hour24, minute);
+  return formatDistance(datePosted, new Date(), { addSuffix: true });
 };

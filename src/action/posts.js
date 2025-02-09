@@ -3,8 +3,6 @@
 import dbConnect from "@/lib/db";
 import { parseDatePosted } from "@/lib/utils";
 import PressRelease from "@/models/PressRelease";
-import { revalidatePath } from "next/cache";
-import { getAllTranslations } from "./translation";
 
 
 export const getPosts = async () => {
@@ -58,70 +56,48 @@ export const getPosts = async () => {
 }
 
 export const getPost = async (title) => {
-
     try {
         await dbConnect();
-        const decodedTitle = decodeURIComponent(title).replace(/\+/g, ' ');
-        const pressRelease = await PressRelease.findOne({ title: decodedTitle });
+
+        // Use a case-insensitive regex to find the post
+        const pressRelease = await PressRelease.findOne({
+            $or: [
+                { "translations.english.title": { $regex: new RegExp(`^${title}$`, "i") } },
+                { "translations.english.title": title },
+            ]
+        });
+
         return pressRelease;
 
-
     } catch (error) {
-        return null
+        console.error("Error fetching post:", error); // Log the error for debugging
+        return null;
     }
-}
+};
 
-export const getRecentPosts = async (title) => {
-
+export const getRecentPosts = async () => {
     try {
         await dbConnect();
-        const recentReleases = await PressRelease.find();
 
-        const updatedReleases = recentReleases.map(p => {
-            // Extract and parse the date
-            const datePosted = parseDatePosted(p._doc.date_posted);
+        // Fetch the 6 most recent posts, sorted by date_posted in descending order
+        const recentReleases = await PressRelease.find()
+            .sort({ date_posted: -1 })
+            .limit(6)
+            .lean(); // Use .lean() to get plain JavaScript objects instead of Mongoose documents
 
-            // Add the timestamp field to the document
+        // Modify each release
+        const modifiedReleases = recentReleases.map((release) => {
+            const datePosted = parseDatePosted(release.date_posted); // Parse the date
             return {
-                ...p._doc,
-                _id: p._doc._id.toString(),
-                timestamp: datePosted.getTime() // Add timestamp in milliseconds
+                ...release,
+                _id: release._id.toString(), // Convert ObjectId to string
+                date_posted: datePosted, // Update the date_posted field
             };
         });
 
-        // Sort the array by timestamp in descending order (latest first)
-        const sortedReleases = updatedReleases.sort((a, b) => b.timestamp - a.timestamp);
-
-        return sortedReleases.slice(0, 6); // Return the first 5 elements
+        return modifiedReleases;
 
     } catch (error) {
-        return []
+        throw new Error("Error fetching recent posts:", error); // Log the error
     }
-}
-
-export const scrapPost = async (url) => {
-    try {
-        await dbConnect();
-        const res = await fetch(`${process.env.SCRAP_URL}/scrape_single?url=${url}`);
-        const data = await res.json();
-
-        revalidatePath('/all');
-        revalidatePath('/');
-
-        const transRes = await getAllTranslations(data.data.title, data.data.content, data.data.ministry);
-
-        return {
-            message: "Scraped successful and translation started",
-            success: data.success || false,
-            type: data.type || 'error',
-            title: data.data.title,
-        };
-
-    } catch (error) {
-        return {
-            message: error.message,
-            success: false,
-            type: 'error',
-        }
-    }
-}
+};
