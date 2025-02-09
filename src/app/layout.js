@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <Header />
-          <main className="max-w-7xl p-2 md:p-4 overflow-x-hidden scroll-smooth min-h-screen w-full mx-auto mt-28">
+          <main className="max-w-7xl p-2 md:p-4 overflow-x-hidden scroll-smooth min-h-screen w-full mx-auto">
             {children}
           </main>
           <Toaster />
